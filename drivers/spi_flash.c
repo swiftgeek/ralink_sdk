@@ -285,6 +285,7 @@ static struct chip_info chips_data [] = {
 	{ "EN25Q64",            0x1c, 0x30171c30, 64 * 1024, 128,  0 },
 	{ "W25Q32BV",		0xef, 0x40160000, 64 * 1024, 64,  0 }, //S25FL032K
 	{ "W25Q64BV",		0xef, 0x40170000, 64 * 1024, 128,  0 }, //S25FL064K
+	{ "W25Q128BV",		0xef, 0x40180000, 64 * 1024, 256,  0 }, //S25FL064K
 };
 
 static int raspi_cmd(const u8 cmd, const u32 addr, const u8 mode, u8 *buf, const size_t n_buf, const u32 user, const int flag)
@@ -1278,6 +1279,12 @@ int do_mem_cp(cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 		dest = 0;
 		printf("\n Copy uboot[%d byte] to SPI Flash[0x%08X].... \n", count, dest);
 	}
+	else if (!strncmp(argv[0], "cp.weblinux", 9)) {
+		addr = WEBFAILSAFE_UPLOAD_RAM_ADDRESS;
+		dest = CFG_KERN_ADDR - CFG_FLASH_BASE;
+		printf("\n Copy linux image from web[%d byte] to SPI Flash[0x%08X].... \n", count, dest);
+	}
+	
 	else {
 		printf ("Usage:\n%s\n", cmdtp->usage);
 		return 1;
