@@ -20,7 +20,7 @@
 #define GPIO_PRUPOSE		(RALINK_SYSCTL_BASE + GPIO_PURPOSE_SELECT)
 
 #elif defined (RT6855_FPGA_BOARD) || defined (RT6855_ASIC_BOARD) || \
-      defined (RT6855A_FPGA_BOARD) || defined (RT6855A_ASIC_BOARD) || \
+      defined (RT63365_FPGA_BOARD) || defined (RT63365_ASIC_BOARD) || \
       defined (RT6352_FPGA_BOARD) || defined (RT6352_ASIC_BOARD) || \
       defined (RT71100_FPGA_BOARD) || defined (RT71100_ASIC_BOARD)
 
@@ -62,12 +62,12 @@ void enable_mdio(int enable)
 }
 #endif
 
-#if defined (RT6855A_FPGA_BOARD) || defined (RT6855A_ASIC_BOARD)
+#if defined (RT63365_FPGA_BOARD) || defined (RT63365_ASIC_BOARD)
 #define enable_mdio(x)
 #endif
 
 #if defined (RT6855_FPGA_BOARD) || defined (RT6855_ASIC_BOARD) || \
-    defined (RT6855A_FPGA_BOARD) || defined (RT6855A_ASIC_BOARD) || \
+    defined (RT63365_FPGA_BOARD) || defined (RT63365_ASIC_BOARD) || \
     defined (RT6352_FPGA_BOARD) || defined (RT6352_ASIC_BOARD) || \
     defined (RT71100_FPGA_BOARD) || defined (RT71100_ASIC_BOARD)
 
@@ -417,7 +417,7 @@ int rt2880_mdio_access(cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 	if(!memcmp(argv[0],"mdio.anoff",sizeof("mdio.anoff")))
 	{
 #if   defined (RT6855_FPGA_BOARD) || defined (RT6855_ASIC_BOARD) || \
-      defined (RT6855A_FPGA_BOARD) || defined (RT6855A_ASIC_BOARD) || \
+      defined (RT63365_FPGA_BOARD) || defined (RT63365_ASIC_BOARD) || \
       defined (RT6352_FPGA_BOARD) || defined (RT6352_ASIC_BOARD) || \
       defined (RT71100_FPGA_BOARD) || defined (RT71100_ASIC_BOARD)
 		value = inw(MDIO_PHY_CONTROL_1);
@@ -435,7 +435,7 @@ int rt2880_mdio_access(cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 	else if(!memcmp(argv[0],"mdio.anon",sizeof("mdio.anon")))
 	{
 #if   defined (RT6855_FPGA_BOARD) || defined (RT6855_ASIC_BOARD) || \
-      defined (RT6855A_FPGA_BOARD) || defined (RT6855A_ASIC_BOARD) || \
+      defined (RT63365_FPGA_BOARD) || defined (RT63365_ASIC_BOARD) || \
       defined (RT6352_FPGA_BOARD) || defined (RT6352_ASIC_BOARD) || \
       defined (RT71100_FPGA_BOARD) || defined (RT71100_ASIC_BOARD)
 
@@ -537,7 +537,7 @@ int rt2880_mdio_access(cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 			dump_phy_reg(i, 0, 31, 1); //dump local register
 		    }
 		}
-#else //RT6855A, RT6855, RT6352, RT71100
+#else //RT63365, RT6855, RT6352, RT71100
 		/* SPEC defined Register 0~15
 		 * Global Register 16~31 for each page
 		 * Local Register 16~31 for each page

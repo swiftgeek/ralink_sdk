@@ -98,7 +98,7 @@
 #define LSR_DR		(1 << 0)	/* Data Ready */
                                                                   
 
-#if defined (RT6855A_FPGA_BOARD) || defined (RT6855A_ASIC_BOARD) 
+#if defined (RT63365_FPGA_BOARD) || defined (RT63365_ASIC_BOARD) 
 #define CR_UART_RBR	(0x00+RALINK_UART_LITE_BASE)
 #define CR_UART_THR	(0x00+RALINK_UART_LITE_BASE)
 #define CR_UART_IER	(0x04+RALINK_UART_LITE_BASE)

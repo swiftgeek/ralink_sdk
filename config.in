@@ -11,7 +11,9 @@ choice 'Chip ID'	 "RT2880 RT2880_FPGA_BOARD \
                           RT3352 RT3352_FPGA_BOARD \
                           RT3883 RT3883_FPGA_BOARD \
                           RT5350 RT5350_FPGA_BOARD \
-                          RT6855A RT6855A_FPGA_BOARD
+                          RT6855(63365) RT63365_FPGA_BOARD \
+                          RT6352 RT6352_FPGA_BOARD \
+                          RT71100 RT71100_FPGA_BOARD 
                          "
 else
 choice 'Chip ID'	" RT2880 RT2880_ASIC_BOARD \
@@ -20,7 +22,9 @@ choice 'Chip ID'	" RT2880 RT2880_ASIC_BOARD \
                           RT3352 RT3352_ASIC_BOARD \
                           RT3883 RT3883_ASIC_BOARD \
                           RT5350 RT5350_ASIC_BOARD \
-                          RT6855A RT6855A_ASIC_BOARD
+                          RT6855(63365) RT63365_ASIC_BOARD \
+                          RT6352 RT6352_ASIC_BOARD \
+                          RT71100 RT71100_ASIC_BOARD 
                          "
 fi
 
@@ -671,14 +675,14 @@ fi
 fi
 
 #########################################################################################3
-# RT6855A
+# RT63365
 #########################################################################################3
-if [ "$RT6855A_FPGA_BOARD" = "y" -o "$RT6855A_ASIC_BOARD" = "y" ]; then
+if [ "$RT63365_FPGA_BOARD" = "y" -o "$RT63365_ASIC_BOARD" = "y" ]; then
 
-define_bool RT6855A_MP y
+define_bool RT63365_MP y
 
 #-----------------------
-# RT6855A GMAC
+# RT63365 GMAC
 #-----------------------
 choice 'Port 5 Connect to' "None		P5_MAC_TO_NONE_MODE \
 			    Giga_Phy(RGMII)	P5_MAC_TO_PHY_MODE \
@@ -696,14 +700,14 @@ if [ "$P5_RGMII_TO_MAC_MODE" = "y" ]; then
 fi
 
 #-----------------------
-# RT6855A FLASH
+# RT63365 FLASH
 #-----------------------
 choice 'Flash Type' "NAND ON_BOARD_NAND_FLASH_COMPONENT \
 		     SPI ON_BOARD_SPI_FLASH_COMPONENT
 		    "SPI
 
 #-----------------------
-# RT6855A DRAM
+# RT63365 DRAM
 #-----------------------
 choice 'DRAM Type' "SDR ON_BOARD_SDR \
 		    DDR1 ON_BOARD_DDR1 \
@@ -738,7 +742,7 @@ fi
 define_bool ON_BOARD_16BIT_DRAM_BUS y
 
 #-----------------------
-# RT6855A Option
+# RT63365 Option
 #-----------------------
 comment ""
 if [ "$ON_BOARD_SPI_FLASH_COMPONENT" == "y" ]; then

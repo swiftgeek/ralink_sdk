@@ -53,9 +53,6 @@ int modifies= 0;
 #endif
 #define ARGV_LEN  128
 
-#if defined (RT6855A_ASIC_BOARD) || defined(RT6855A_FPGA_BOARD)	
-static int watchdog_reset();
-#endif
 
 extern int timer_init(void);
 
@@ -76,8 +73,8 @@ extern void input_value(u8 *str);
     defined (RT6352_ASIC_BOARD) || defined (RT6352_FPGA_BOARD) || \
     defined (RT71100_ASIC_BOARD) || defined (RT71100_FPGA_BOARD)
 extern void rt_gsw_init(void);
-#elif defined (RT6855A_ASIC_BOARD) || defined (RT6855A_FPGA_BOARD) 
-extern void rt6855A_gsw_init(void);
+#elif defined (RT63365_ASIC_BOARD) || defined (RT63365_FPGA_BOARD) 
+extern void rt63365_gsw_init(void);
 #else
 extern void rt305x_esw_init(void);
 #endif
@@ -138,7 +135,7 @@ static void Init_System_Mode(void)
 #elif defined (RT2883_FPGA_BOARD) || defined (RT3052_FPGA_BOARD) || defined (RT3352_FPGA_BOARD) || defined (RT5350_FPGA_BOARD)
 	mips_cpu_feq = 40 * 1000 *1000;
 	mips_bus_feq = mips_cpu_feq/3;
-#elif defined (RT6855A_FPGA_BOARD)
+#elif defined (RT63365_FPGA_BOARD)
 	mips_cpu_feq = 50 * 1000 *1000;
 	mips_bus_feq = mips_cpu_feq/2;
 #elif defined (RT3883_FPGA_BOARD)
@@ -215,10 +212,10 @@ static void Init_System_Mode(void)
 #elif defined(RT6855_ASIC_BOARD)
 	mips_cpu_feq = (400*1000*1000);
 	mips_bus_feq = (133*1000*1000);
-#elif defined (RT6855A_ASIC_BOARD)
+#elif defined (RT63365_ASIC_BOARD)
 	/* FPGA is 25/32Mhz
-	 * ASIC RT6856/RT6856A: DDR(0): 233.33, DDR(1): 175, SDR: 140
-	 *      RT6855/RT6855A: DDR(0): 166.67, DDR(1): 125, SDR: 140 */
+	 * ASIC RT6856/RT63368: DDR(0): 233.33, DDR(1): 175, SDR: 140
+	 *      RT6855/RT63365: DDR(0): 166.67, DDR(1): 125, SDR: 140 */
 	reg = RALINK_REG(RT2880_SYSCFG_REG);
 	if ((reg & (1 << 25)) == 0) { /* SDR */
 		if ((reg & (1 << 9)) != 0)
@@ -555,9 +552,6 @@ void board_init_f(ulong bootflag)
 		
 	memset ((void *)gd, 0, sizeof (gd_t));
 
-#if defined (RT6855A_ASIC_BOARD) || defined(RT6855A_FPGA_BOARD)	
-	watchdog_reset();
-#endif
 	timer_init();
 	env_init();		/* initialize environment */
 	init_baudrate();		/* initialze baudrate settings */
@@ -835,7 +829,7 @@ int tftp_config(int type, char *argv[])
 #if defined (RT2880_ASIC_BOARD) || defined (RT2880_FPGA_BOARD)
 		argv[1] = "0x8a800000";
 #else
-		argv[1] = "0x80A00000";
+		argv[1] = "0x80800000";
 #endif
 		printf("\tInput Linux Kernel filename ");
 		//argv[2] = "uImage";
@@ -1473,14 +1467,15 @@ void board_init_r (gd_t *id, ulong dest_addr)
 	SHOW_VER_STR();
 #endif /* defined(CFG_ENV_IS_IN_SPI) || defined (CFG_ENV_IS_IN_NAND) */
 
+
 #elif (defined (RT6855_ASIC_BOARD) || defined (RT6855_FPGA_BOARD) ||  \
-      defined (RT6855A_ASIC_BOARD) || defined (RT6855A_FPGA_BOARD) || \
+      defined (RT63365_ASIC_BOARD) || defined (RT63365_FPGA_BOARD) || \
       defined (RT6352_ASIC_BOARD) || defined (RT6352_FPGA_BOARD) ||  \
       defined (RT71100_ASIC_BOARD) || defined (RT71100_FPGA_BOARD)) && defined (UBOOT_RAM)
 	{
 		unsigned long chip_mode, dram_comp, dram_bus, is_ddr1, is_ddr2, data, cfg0, cfg1, size=0;
 		int dram_type_bit_offset = 0;
-#if defined (RT6855A_ASIC_BOARD) || defined(RT6855A_FPGA_BOARD)	
+#if defined (RT63365_ASIC_BOARD) || defined(RT63365_FPGA_BOARD)	
 		data = RALINK_REG(RALINK_SYSCTL_BASE+0x8c);
 		chip_mode = ((data>>28) & 0x3)|(((data>>22) & 0x3)<<2);
 		dram_type_bit_offset = 24;
@@ -1493,7 +1488,7 @@ void board_init_r (gd_t *id, ulong dest_addr)
 		{
 			default:
 			case 0:
-#if defined (RT6855A_ASIC_BOARD) || defined(RT6855A_FPGA_BOARD)
+#if defined (RT63365_ASIC_BOARD) || defined(RT63365_FPGA_BOARD)
 #else				
 			case 3:
 #endif
@@ -1504,7 +1499,7 @@ void board_init_r (gd_t *id, ulong dest_addr)
 				is_ddr2 = is_ddr1 = 0;
 #endif
 				break;
-#if defined (RT6855A_ASIC_BOARD) || defined(RT6855A_FPGA_BOARD)
+#if defined (RT63365_ASIC_BOARD) || defined(RT63365_FPGA_BOARD)
 			case 2:
 #else				
 			case 1:
@@ -1512,7 +1507,7 @@ void board_init_r (gd_t *id, ulong dest_addr)
 				is_ddr2 = 0;
 				is_ddr1 = 1;
 				break;
-#if defined (RT6855A_ASIC_BOARD) || defined(RT6855A_FPGA_BOARD)
+#if defined (RT63365_ASIC_BOARD) || defined(RT63365_FPGA_BOARD)
 			case 3:
 #else				
 			case 2:
@@ -1526,7 +1521,7 @@ void board_init_r (gd_t *id, ulong dest_addr)
 		{
 			case 0:
 #if defined (RT6352_ASIC_BOARD) || defined (RT6352_FPGA_BOARD) || \				
-	defined (RT6855A_ASIC_BOARD) || defined(RT6855A_FPGA_BOARD)
+	defined (RT63365_ASIC_BOARD) || defined(RT63365_FPGA_BOARD)
 #else
 			case 3:
 #endif				
@@ -1541,7 +1536,7 @@ void board_init_r (gd_t *id, ulong dest_addr)
 			case 1:
 			case 2:
 #if defined (RT6352_ASIC_BOARD) || defined (RT6352_FPGA_BOARD) || \
-	defined (RT6855A_ASIC_BOARD) || defined(RT6855A_FPGA_BOARD)
+	defined (RT63365_ASIC_BOARD) || defined(RT63365_FPGA_BOARD)
 			case 3:
 #endif				
 				cfg0 = RALINK_REG(RALINK_MEMCTRL_BASE+0x40);
@@ -1559,7 +1554,7 @@ void board_init_r (gd_t *id, ulong dest_addr)
 				}	
 				break;
 		}
-#if defined (RT6855A_ASIC_BOARD) || defined(RT6855A_FPGA_BOARD)		
+#if defined (RT63365_ASIC_BOARD) || defined(RT63365_FPGA_BOARD)		
 		if ((((RALINK_REG(RALINK_SYSCTL_BASE+0x8c)>>30)&0x1)==0) && ((chip_mode==2)||(chip_mode==3))) 
 		{
 #if defined(ON_BOARD_DDR2)
@@ -1580,8 +1575,8 @@ void board_init_r (gd_t *id, ulong dest_addr)
 		printf("Ralink UBoot Version: %s\n", RALINK_LOCAL_VERSION);
 		printf("-------------------------------------------- \n");
 		printf("%s %s %s\n",CHIP_TYPE, CHIP_VERSION, GMAC_MODE);
-#if defined (RT6855A_ASIC_BOARD) || defined (RT6855A_FPGA_BOARD)
-#if defined (RT6855A_FPGA_BOARD)
+#if defined (RT63365_ASIC_BOARD) || defined (RT63365_FPGA_BOARD)
+#if defined (RT63365_FPGA_BOARD)
 		if((!is_ddr2)&&(!is_ddr1))
 		{
 		printf("[SDR_CFG0=0x%08X, SDR_CFG1=0x%08X]\n", RALINK_REG(RALINK_MEMCTRL_BASE+0x0),\
@@ -1721,11 +1716,11 @@ void board_init_r (gd_t *id, ulong dest_addr)
       defined (RT6352_ASIC_BOARD) || defined (RT6352_FPGA_BOARD) || \
       defined (RT71100_ASIC_BOARD) || defined (RT71100_FPGA_BOARD)
 	rt_gsw_init();
-#elif defined (RT6855A_ASIC_BOARD) || defined (RT6855A_FPGA_BOARD)
+#elif defined (RT63365_ASIC_BOARD) || defined (RT63365_FPGA_BOARD)
 #ifdef FPGA_BOARD
-	rt6855A_eth_gpio_reset();
+	rt63365_eth_gpio_reset();
 #endif
-	rt6855A_gsw_init();
+	rt63365_gsw_init();
 #endif
 	LANWANPartition();
 
@@ -2275,7 +2270,6 @@ void adjust_rf_r17(void)
 	//rw_rf_reg(0, 17, &val);
 	//printf("Read RF_R17 = 0x%0X\n", val);
 }
-
 #if defined(RT3883_ASIC_BOARD) || defined(RT3352_ASIC_BOARD) || defined(RT5350_ASIC_BOARD) || defined(RT6855_ASIC_BOARD) || defined (RT6352_ASIC_BOARD)
 /*
  * enter power saving mode
@@ -2464,26 +2458,4 @@ void config_usbotg(void)
 	return;
 }
 
-#endif
-#if defined (RT6855A_ASIC_BOARD) || defined(RT6855A_FPGA_BOARD)	
-static int watchdog_reset()
-{
-	unsigned int word;
-	unsigned int i;
-
-	/* check if do watch dog reset */
-	if (RALINK_REG(RALINK_HIR_REG) == 0x40002) {
-		if (!(RALINK_REG(0xbfb00080) >> 31)) {
-			/* set delay counter */
-			RALINK_REG(RALINK_TIMER5_LDV) = 1000;
-			/* enable watch dog timer */
-			word = RALINK_REG(RALINK_TIMER_CTL);
-			word |= ((1 << 5) | (1 << 25));
-			RALINK_REG(RALINK_TIMER_CTL) = word;
-			while(1);
-		}
-	}
-
-	return 0;
-}
 #endif

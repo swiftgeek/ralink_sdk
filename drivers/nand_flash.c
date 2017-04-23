@@ -193,7 +193,7 @@ unsigned long ranand_init(void)
 			((CONFIG_ECC_OFFSET + 1) << 12) +
 			(CONFIG_ECC_OFFSET << 8));
 	
-#elif defined (RT6855A_ASIC_BOARD) || defined (RT6855A_FPGA_BOARD)
+#elif defined (RT63365_ASIC_BOARD) || defined (RT63365_FPGA_BOARD)
 	//FIXME: config 512 or 2048-byte page according to HWCONF
 	reg = ra_inl(RALINK_SYSCTL_BASE+0x8c);
 	chip_mode = ((reg>>28) & 0x3)|(((reg>>22) & 0x3)<<2);
@@ -447,7 +447,7 @@ static inline int nfc_read_raw_data(int cmd1, int cmd2, int bus_addr, int bus_ad
 	ra_outl(NFC_CMD2, cmd2);
 	ra_outl(NFC_ADDR, bus_addr);
 #if defined (RT6855_FPGA_BOARD) || defined (RT6855_ASIC_BOARD) || \
-	defined (RT6855A_FPGA_BOARD) || defined (RT6855A_ASIC_BOARD) || \
+	defined (RT63365_FPGA_BOARD) || defined (RT63365_ASIC_BOARD) || \
 	defined (RT6352_FPGA_BOARD) || defined (RT6352_ASIC_BOARD)	
 	ra_outl(NFC_ADDR2, bus_addr2);
 #endif	
@@ -479,7 +479,7 @@ static inline int nfc_write_raw_data(int cmd1, int cmd3, int bus_addr, int bus_a
 	ra_outl(NFC_CMD3, cmd3);
 	ra_outl(NFC_ADDR, bus_addr);
 #if defined (RT6855_FPGA_BOARD) || defined (RT6855_ASIC_BOARD) || \
-	defined (RT6855A_FPGA_BOARD) || defined (RT6855A_ASIC_BOARD) || \
+	defined (RT63365_FPGA_BOARD) || defined (RT63365_ASIC_BOARD) || \
 	defined (RT6352_FPGA_BOARD) || defined (RT6352_ASIC_BOARD)	
 	ra_outl(NFC_ADDR2, bus_addr2);
 #endif	
@@ -654,7 +654,7 @@ ecc_check:
 		}
 	}
 #if defined (RT6855_FPGA_BOARD) || defined (RT6855_ASIC_BOARD) || \
-    defined (RT6855A_FPGA_BOARD) || defined (RT6855A_ASIC_BOARD) || \
+    defined (RT63365_FPGA_BOARD) || defined (RT63365_ASIC_BOARD) || \
     defined (RT6352_FPGA_BOARD) || defined (RT6352_ASIC_BOARD)	
 	else {
 		int ecc2, ecc3, ecc4, qsz;

@@ -248,7 +248,7 @@ void serial_setbrg (void)
 #endif
 	}
 	mips_bus_feq = cpu_clock / 2;
-#elif defined(RT6855A_ASIC_BOARD) || defined(RT6855A_FPGA_BOARD)
+#elif defined(RT63365_ASIC_BOARD) || defined(RT63365_FPGA_BOARD)
 	//use bbu_init_uart() instead, and this is to avoid the compiling error
 #else
 #error "undefined Platform"
@@ -268,7 +268,7 @@ void serial_setbrg (void)
       defined(RT6352_ASIC_BOARD) || defined(RT6352_FPGA_BOARD) || \
       defined(RT71100_ASIC_BOARD) || defined(RT71100_FPGA_BOARD)
 	*(unsigned long *)(RALINK_SYSCTL_BASE + 0x0034) = cpu_to_le32(1<<19|1<<12);
-#elif defined(RT6855A_ASIC_BOARD) || defined(RT6855A_FPGA_BOARD)
+#elif defined(RT63365_ASIC_BOARD) || defined(RT63365_FPGA_BOARD)
 	//use bbu_init_uart insead and avoid the compiling error
 #else
 #error "undefined Platform"
@@ -313,7 +313,7 @@ static unsigned long uclk_20M[13]={ // 65000*(b*16*1)/2000000
 	57              // Baud rate 110
 };
 
-#if defined(RT6855A_ASIC_BOARD) || defined(RT6855A_FPGA_BOARD)
+#if defined(RT63365_ASIC_BOARD) || defined(RT63365_FPGA_BOARD)
 void bbu_uart_init(void)
 {
 	int i;
@@ -356,7 +356,7 @@ void bbu_uart_init(void)
  */
 int serial_init (void)
 {
-#if defined(RT6855A_ASIC_BOARD) || defined(RT6855A_FPGA_BOARD)
+#if defined(RT63365_ASIC_BOARD) || defined(RT63365_FPGA_BOARD)
 	bbu_uart_init();
 #else
 	serial_setbrg ();
@@ -370,7 +370,7 @@ int serial_init (void)
  */
 void serial_putc (const char c)
 {
-#if defined (RT6855A_FPGA_BOARD) || defined (RT6855A_ASIC_BOARD) 
+#if defined (RT63365_FPGA_BOARD) || defined (RT63365_ASIC_BOARD) 
 	while (!(ra_inb(CR_UART_LSR) & LSR_TEMT));
 	ra_outb(CR_UART_THR, c);
 	if (c == '\n')
@@ -394,7 +394,7 @@ void serial_putc (const char c)
  */
 int serial_tstc (void)
 {
-#if defined (RT6855A_FPGA_BOARD) || defined (RT6855A_ASIC_BOARD) 
+#if defined (RT63365_FPGA_BOARD) || defined (RT63365_ASIC_BOARD) 
 	return (ra_inb(CR_UART_LSR) & LSR_DR);
 #else
 	return LSR(CFG_RT2880_CONSOLE) & LSR_DR;
@@ -408,7 +408,7 @@ int serial_tstc (void)
  */
 int serial_getc (void)
 {
-#if defined (RT6855A_FPGA_BOARD) || defined (RT6855A_ASIC_BOARD) 
+#if defined (RT63365_FPGA_BOARD) || defined (RT63365_ASIC_BOARD) 
 	while (!(ra_inb(CR_UART_LSR) & LSR_DR));
 	return (char) (ra_inb(CR_UART_RBR) & 0xff);
 #else

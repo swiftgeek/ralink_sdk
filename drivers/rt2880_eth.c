@@ -158,7 +158,7 @@
 #define SDM_CS_ERR              (RALINK_FRAME_ENGINE_BASE + SDM_RELATED+0x110) //Switch DMA rx checksum error count
 
 #elif defined (RT6855_ASIC_BOARD) || defined (RT6855_FPGA_BOARD) || \
-      defined (RT6855A_FPGA_BOARD) || defined (RT6855A_ASIC_BOARD) || \
+      defined (RT63365_FPGA_BOARD) || defined (RT63365_ASIC_BOARD) || \
       defined (RT6352_ASIC_BOARD) || defined (RT6352_FPGA_BOARD) || \
       defined (RT71100_ASIC_BOARD) || defined (RT71100_FPGA_BOARD)
 /* Old FE with New PDMA */
@@ -1176,7 +1176,7 @@ static int isVtssGigaPHY(int ge)
 #if defined (MAC_TO_GIGAPHY_MODE) || defined (P5_MAC_TO_PHY_MODE) || defined (MAC_TO_100PHY_MODE)
 
 #if defined (RT6855_ASIC_BOARD) || defined (RT6855_FPGA_BOARD) || \
-    defined (RT6855A_ASIC_BOARD) || defined (RT6855A_FPGA_BOARD)
+    defined (RT63365_ASIC_BOARD) || defined (RT63365_FPGA_BOARD)
     
 
 void enable_auto_negotiate(void)
@@ -1220,10 +1220,9 @@ void enable_auto_negotiate(void)
 
 }
 
-#elif defined (RT2880_ASIC_BOARD) || defined (RT2880_FPGA_BOARD) || \
-      defined (RT3883_ASIC_BOARD) || defined (RT3883_FPGA_BOARD) || \
-      defined (RT3052_ASIC_BOARD) || defined (RT3052_FPGA_BOARD) || \
-      defined (RT3352_ASIC_BOARD) || defined (RT3352_FPGA_BOARD)
+#elif defined (RT3052_ASIC_BOARD) || defined (RT3052_FPGA_BOARD) || \
+      defined (RT3352_ASIC_BOARD) || defined (RT3352_FPGA_BOARD) || \
+      defined (RT5350_ASIC_BOARD) || defined (RT5350_FPGA_BOARD)       
 void enable_auto_negotiate(void)
 {
 	u32 regValue;
@@ -1270,13 +1269,13 @@ int isDMABusy(struct eth_device* dev)
 	return 0;
 }
 
-#if defined (RT6855A_ASIC_BOARD) || defined (RT6855A_FPGA_BOARD)
-void rt6855A_gsw_init(void)
+#if defined (RT63365_ASIC_BOARD) || defined (RT63365_FPGA_BOARD)
+void rt63365_gsw_init(void)
 {
 	u32	i = 0;
 	u32	phy_val=0;
 	u32     rev=0;
-#if defined (RT6855A_FPGA_BOARD)
+#if defined (RT63365_FPGA_BOARD)
 	RALINK_REG(RALINK_ETH_SW_BASE+0x3000) = 0x5e353;//(P0, Force mode, Link Up, 100Mbps, Full-Duplex, FC ON)
 	RALINK_REG(RALINK_ETH_SW_BASE+0x3100) = 0x5e353;//(P1, Force mode, Link Up, 100Mbps, Full-Duplex, FC ON)
 	//RALINK_REG(RALINK_ETH_SW_BASE+0x3000) = 0x5e333;//(P0, Force mode, Link Up, 10Mbps, Full-Duplex, FC ON)
@@ -1296,7 +1295,7 @@ void rt6855A_gsw_init(void)
                 phy_val &= ~(3<<8); //turn off 1000Base-T Advertisement
                 mii_mgr_write(i, 9, phy_val);
 	}
-#elif defined (RT6855A_ASIC_BOARD)
+#elif defined (RT63365_ASIC_BOARD)
 
 	RALINK_REG(RALINK_ETH_SW_BASE+0x3600) = 0x5e33b;//CPU Port6 Force Link 1G, FC ON
 	RALINK_REG(RALINK_ETH_SW_BASE+0x0010) = 0xffffffe0;//CPU exist in port 6
@@ -1364,7 +1363,7 @@ void rt6855A_gsw_init(void)
 	}
 #endif  
 
-#if defined (RT6855A_ASIC_BOARD)
+#if defined (RT63365_ASIC_BOARD)
 #if defined (P5_RGMII_TO_MAC_MODE)
 	RALINK_REG(RALINK_ETH_SW_BASE+0x3500) = 0x5e33b; ////(P5, Force mode, Link Up, 1000Mbps, Full-Duplex, FC ON)
 #elif defined (P5_MII_TO_MAC_MODE)
@@ -1400,7 +1399,7 @@ void rt6855A_gsw_init(void)
 #elif defined (P5_RMII_TO_MAC_MODE)
 	RALINK_REG(RALINK_ETH_SW_BASE+0x3500) = 0x5e337; ////(P5, Force mode, Link Up, 100Mbps, Full-Duplex, FC ON)
 #else /* Port 5 disabled */
-	RALINK_REG(RALINK_ETH_SW_BASE+0x3500) = 0x8000; ////(P5, Link Down)
+	RALINK_REG(RALINK_ETH_SW_BASE+0x3500) = 0x800; ////(P5, Link Down)
 #endif // P5_RGMII_TO_MAC_MODE //
 #endif
 }
@@ -1496,7 +1495,7 @@ void rt_gsw_init(void)
 	RALINK_REG(RT2880_SYSCFG1_REG) &= ~(0x3 << 12); //GE1_MODE=Mii Mode
 	RALINK_REG(RT2880_SYSCFG1_REG) |= (0x2 << 12);
 #else /* Port 5 disabled */
-	RALINK_REG(RALINK_ETH_SW_BASE+0x3500) = 0x8000; ////(P5, Link Down)
+	RALINK_REG(RALINK_ETH_SW_BASE+0x3500) = 0x800; ////(P5, Link Down)
 #endif // P5_RGMII_TO_MAC_MODE //
 #endif
 
@@ -1560,8 +1559,8 @@ void rt_gsw_init(void)
 }
 #endif
 
-#if defined (RT6855A_FPGA_BOARD)
-void rt6855A_eth_gpio_reset(void)
+#if defined (RT63365_FPGA_BOARD)
+void rt63365_eth_gpio_reset(void)
 {
 	u8 ether_gpio = 12;
 
@@ -1948,7 +1947,7 @@ static int rt2880_eth_setup(struct eth_device* dev)
       defined (RT3352_ASIC_BOARD) || defined (RT3352_FPGA_BOARD) || \
       defined (RT5350_ASIC_BOARD) || defined (RT5350_FPGA_BOARD) || \
       defined (RT6855_ASIC_BOARD) || defined (RT6855_FPGA_BOARD) || \
-      defined (RT6855A_ASIC_BOARD) || defined (RT6855A_FPGA_BOARD) || \
+      defined (RT63365_ASIC_BOARD) || defined (RT63365_FPGA_BOARD) || \
       defined (RT6352_ASIC_BOARD) || defined (RT6352_FPGA_BOARD) || \
       defined (RT71100_ASIC_BOARD) || defined (RT71100_FPGA_BOARD)
 
@@ -2331,7 +2330,7 @@ static int rt2880_eth_send(struct eth_device* dev, volatile void *packet, int le
     defined (RT5350_ASIC_BOARD) || defined (RT5350_FPGA_BOARD) || \
     defined (RT3883_ASIC_BOARD) || defined (RT3883_FPGA_BOARD) || \
     defined (RT6855_ASIC_BOARD) || defined (RT6855_FPGA_BOARD) || \
-    defined (RT6855A_ASIC_BOARD) || defined (RT6855A_FPGA_BOARD) || \
+    defined (RT63365_ASIC_BOARD) || defined (RT63365_FPGA_BOARD) || \
     defined (RT6352_ASIC_BOARD) || defined (RT6352_FPGA_BOARD) || \
     defined (RT71100_ASIC_BOARD) || defined (RT71100_FPGA_BOARD)
 	char *p=(char *)packet;
@@ -2352,7 +2351,7 @@ Retry:
     defined (RT5350_ASIC_BOARD) || defined (RT5350_FPGA_BOARD) || \
     defined (RT3883_ASIC_BOARD) || defined (RT3883_FPGA_BOARD) || \
     defined (RT6855_ASIC_BOARD) || defined (RT6855_FPGA_BOARD) || \
-    defined (RT6855A_ASIC_BOARD) || defined (RT6855A_FPGA_BOARD)
+    defined (RT63365_ASIC_BOARD) || defined (RT63365_FPGA_BOARD)
 #define PADDING_LENGTH 60
 	if (length < PADDING_LENGTH) {
 		//	print_packet(packet,length);
