@@ -71,10 +71,10 @@ int do_http_upgrade(const ulong size, const int upgrade_type){
 		printf("\n\n****************************\n*      ART  UPGRADING      *\n* DO NOT POWER OFF DEVICE! *\n****************************\n\n");
 		sprintf(buf,
 				"erase 0x%lX +0x%lX; cp.b 0x%lX 0x%lX 0x%lX",
-				WEBFAILSAFE_UPLOAD_UBOOT_ADDRESS + (info->size - WEBFAILSAFE_UPLOAD_ART_SIZE_IN_BYTES),
+				WEBFAILSAFE_UPLOAD_ART_ADDRESS,
 				WEBFAILSAFE_UPLOAD_ART_SIZE_IN_BYTES,
 				WEBFAILSAFE_UPLOAD_RAM_ADDRESS,
-				WEBFAILSAFE_UPLOAD_UBOOT_ADDRESS + (info->size - WEBFAILSAFE_UPLOAD_ART_SIZE_IN_BYTES),
+				WEBFAILSAFE_UPLOAD_ART_ADDRESS,
 				WEBFAILSAFE_UPLOAD_ART_SIZE_IN_BYTES);
 
 	} else {
